@@ -1,7 +1,5 @@
 pkg_check_modules(RESOURCEQT "libresourceqt5" REQUIRED)
 pkg_check_modules(NEMODEVICELOCK "nemodevicelock" REQUIRED)
-pkg_check_modules(QT5BOOSTABLE "qt5-boostable" REQUIRED)
-
 
 include_directories(${RESOURCEQT_INCLUDE_DIRS} ${NEMODEVICELOCK_INCLUDE_DIRS} ${QT5BOOSTABLE_INCLUDE_DIRS} ${LIBVOICECALL_DIR})
 
@@ -24,7 +22,6 @@ target_link_libraries(voicecall-manager PUBLIC
     Qt5::Multimedia
     ${RESOURCEQT_LIBRARIES}
     ${NEMODEVICELOCK_LIBRARIES}
-    ${QT5BOOSTABLE_LIBRARIES}
     voicecall
 )
 
