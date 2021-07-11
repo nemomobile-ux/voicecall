@@ -30,7 +30,7 @@ class AudioCallPolicyProxyPrivate
 public:
     AudioCallPolicyProxyPrivate(AudioCallPolicyProxy *q, AbstractVoiceCallHandler *s)
         : q_ptr(q), subject(s),
-          resourceSet(NULL), onAcquireReceiver(NULL), onAcquireMethod(QString::null)
+          resourceSet(NULL), onAcquireReceiver(NULL), onAcquireMethod(QString())
     { /* ... */ }
 
     AudioCallPolicyProxy        *q_ptr;
@@ -308,7 +308,7 @@ void AudioCallPolicyProxy::onResourceSetError(quint32 errorno, const char *error
     TRACE
     Q_D(AudioCallPolicyProxy);
     d->onAcquireReceiver = NULL;
-    d->onAcquireMethod = QString::null;
+    d->onAcquireMethod = QString();
     this->hangup();
 }
 
@@ -324,7 +324,7 @@ void AudioCallPolicyProxy::onResourceSetGranted()
 
     QTimer::singleShot(0, d->onAcquireReceiver, qPrintable(d->onAcquireMethod));
     d->onAcquireReceiver = NULL;
-    d->onAcquireMethod = QString::null;
+    d->onAcquireMethod = QString();
 }
 
 void AudioCallPolicyProxy::onResourceSetDenied()
@@ -332,7 +332,7 @@ void AudioCallPolicyProxy::onResourceSetDenied()
     TRACE
     Q_D(AudioCallPolicyProxy);
     d->onAcquireReceiver = NULL;
-    d->onAcquireMethod = QString::null;
+    d->onAcquireMethod = QString();
     this->hangup();
 }
 
@@ -341,7 +341,7 @@ void AudioCallPolicyProxy::onResourceSetLost()
     TRACE
     Q_D(AudioCallPolicyProxy);
     d->onAcquireReceiver = NULL;
-    d->onAcquireMethod = QString::null;
+    d->onAcquireMethod = QString();
     this->hangup();
 }
 

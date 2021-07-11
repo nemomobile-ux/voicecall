@@ -163,7 +163,7 @@ QString VoiceCallProviderModel::id(int index) const
 {
     TRACE
     Q_D(const VoiceCallProviderModel);
-    if(index > d->providers.count()) return QString::null;
+    if(index > d->providers.count()) return QString();
 
     QStringList keys = d->providers.keys();
     qSort(keys);
@@ -176,7 +176,7 @@ QString VoiceCallProviderModel::type(int index) const
 {
     TRACE
     Q_D(const VoiceCallProviderModel);
-    if(index > d->providers.count()) return QString::null;
+    if(index > d->providers.count()) return QString();
     QStringList keys = d->providers.keys();
     qSort(keys);
 
@@ -188,7 +188,7 @@ QString VoiceCallProviderModel::label(int index) const
 {
     TRACE
     Q_D(const VoiceCallProviderModel);
-    if(index > d->providers.count()) return QString::null;
+    if(index > d->providers.count()) return QString();
     QStringList keys = d->providers.keys();
     qSort(keys);
 

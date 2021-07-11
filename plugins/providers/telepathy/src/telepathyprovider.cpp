@@ -37,7 +37,7 @@ class TelepathyProviderPrivate
 public:
     TelepathyProviderPrivate(Tp::AccountPtr a, VoiceCallManagerInterface *m, TelepathyProvider *q)
         : q_ptr(q), manager(m), account(a),
-          errorString(QString::null),
+          errorString(QString()),
           tpChannelRequest(NULL)
     { /* ... */ }
 
