@@ -99,7 +99,7 @@ bool BasicRingtoneNotificationProvider::configure(VoiceCallManagerInterface *man
     QObject::connect(manager, SIGNAL(voiceCallAdded(AbstractVoiceCallHandler*)), SLOT(onVoiceCallAdded(AbstractVoiceCallHandler*)));
     QObject::connect(manager, SIGNAL(silenceRingtoneRequested()), d->player, SLOT(stop()));
 
-    d->player->setMedia(QMediaContent(QUrl::fromLocalFile("/usr/share/voicecall/sounds/ring-1.wav")));
+    d->player->setMedia(QMediaContent(QUrl::fromLocalFile("/usr/share/sounds/glacier/stereo/ring-1.ogg")));
     d->player->setVolume(100);
     QObject::connect(d->player, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), SLOT(onMediaPlayerMediaStatusChanged()));
 
