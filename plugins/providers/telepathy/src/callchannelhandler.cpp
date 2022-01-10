@@ -132,7 +132,8 @@ QString CallChannelHandler::lineId() const
 {
     TRACE
     Q_D(const CallChannelHandler);
-    if(!d->channel->isReady()) return QString();
+    if (!d->channel->isReady())
+        return QString();
     return d->channel->targetId();
 }
 
