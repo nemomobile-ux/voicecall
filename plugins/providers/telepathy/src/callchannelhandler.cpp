@@ -517,8 +517,3 @@ void CallChannelHandler::setStatus(VoiceCallStatus newStatus)
     d->status = newStatus;
     emit statusChanged(d->status);
 }
-
-
-void CallChannelHandler::onCallChannelCallLocalHoldStateChanged(Tp::LocalHoldState state,Tp::LocalHoldStateReason reason) {
-    qWarning() << "TODO missing implementation";
-}

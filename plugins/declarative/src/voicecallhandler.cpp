@@ -452,9 +452,3 @@ void VoiceCallHandler::onPendingCallFinished(QDBusPendingCallWatcher *watcher)
         DEBUG_T("Received successful reply for member: %s", qPrintable(reply.reply().member()));
     }
 }
-
-bool VoiceCallHandler::isReady() const
-{
-    qWarning() << "TODO: missing implementation";
-    return false;
-}

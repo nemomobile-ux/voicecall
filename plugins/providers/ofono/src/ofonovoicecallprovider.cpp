@@ -224,8 +224,3 @@ void OfonoVoiceCallProvider::onCallRemoved(const QString &call)
     emit this->voiceCallRemoved(handlerId);
     emit this->voiceCallsChanged();
 }
-
-bool OfonoVoiceCallProvider::setPoweredAndOnline(bool) {
-    qWarning() << "TODO: missing implementation";
-    return false;
-}
