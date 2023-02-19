@@ -304,11 +304,7 @@ void AudioCallPolicyProxy::onResourceSetError(quint32 errorno, const char *error
     TRACE
     Q_D(AudioCallPolicyProxy);
     d->onAcquireReceiver = NULL;
-<<<<<<< HEAD
-    d->onAcquireMethod = QString();
-=======
     d->onAcquireMethod.clear();
->>>>>>> ca0dc55 (Avoid QString::null shouldn't really be used when the default ctor does it)
     this->hangup();
 }
 
@@ -323,11 +319,7 @@ void AudioCallPolicyProxy::onResourceSetGranted()
 
     QTimer::singleShot(0, d->onAcquireReceiver, qPrintable(d->onAcquireMethod));
     d->onAcquireReceiver = NULL;
-<<<<<<< HEAD
-    d->onAcquireMethod = QString();
-=======
     d->onAcquireMethod.clear();
->>>>>>> ca0dc55 (Avoid QString::null shouldn't really be used when the default ctor does it)
 }
 
 void AudioCallPolicyProxy::onResourceSetDenied()
@@ -335,11 +327,7 @@ void AudioCallPolicyProxy::onResourceSetDenied()
     TRACE
     Q_D(AudioCallPolicyProxy);
     d->onAcquireReceiver = NULL;
-<<<<<<< HEAD
-    d->onAcquireMethod = QString();
-=======
     d->onAcquireMethod.clear();
->>>>>>> ca0dc55 (Avoid QString::null shouldn't really be used when the default ctor does it)
     this->hangup();
 }
 
@@ -348,11 +336,7 @@ void AudioCallPolicyProxy::onResourceSetLost()
     TRACE
     Q_D(AudioCallPolicyProxy);
     d->onAcquireReceiver = NULL;
-<<<<<<< HEAD
-    d->onAcquireMethod = QString();
-=======
     d->onAcquireMethod.clear();
->>>>>>> ca0dc55 (Avoid QString::null shouldn't really be used when the default ctor does it)
     this->hangup();
 }
 

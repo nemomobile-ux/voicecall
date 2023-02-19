@@ -177,12 +177,8 @@ QString VoiceCallProviderModel::type(int index) const
 {
     TRACE
     Q_D(const VoiceCallProviderModel);
-<<<<<<< HEAD
-    if(index > d->providers.count()) return QString();
-=======
     if (index > d->providers.count())
         return QString();
->>>>>>> ca0dc55 (Avoid QString::null shouldn't really be used when the default ctor does it)
     QStringList keys = d->providers.keys();
     std::sort(keys.begin(), keys.end());
 
@@ -194,12 +190,8 @@ QString VoiceCallProviderModel::label(int index) const
 {
     TRACE
     Q_D(const VoiceCallProviderModel);
-<<<<<<< HEAD
-    if(index > d->providers.count()) return QString();
-=======
     if (index > d->providers.count())
         return QString();
->>>>>>> ca0dc55 (Avoid QString::null shouldn't really be used when the default ctor does it)
     QStringList keys = d->providers.keys();
     std::sort(keys.begin(), keys.end());
 
