@@ -34,7 +34,7 @@ class OfonoVoiceCallProvider : public AbstractVoiceCallProvider
 
 public:
     explicit OfonoVoiceCallProvider(const QString &path, VoiceCallManagerInterface *manager, QObject *parent = 0);
-            ~OfonoVoiceCallProvider();
+    ~OfonoVoiceCallProvider();
 
     QString providerId() const;
     QString providerType() const;
@@ -45,8 +45,6 @@ public:
 
 public Q_SLOTS:
     bool dial(const QString &msisdn);
-
-    bool setPoweredAndOnline(bool on = true);
 
 protected Q_SLOTS:
     void interfacesChanged(const QStringList &interfaces);

@@ -89,8 +89,7 @@ void VoiceCallHandler::initialize(bool notifyError)
     Q_D(VoiceCallHandler);
     bool success = false;
 
-    if(d->interface->isValid())
-    {
+    if (d->interface->isValid()) {
         success = true;
         success &= (bool)QObject::connect(d->interface, SIGNAL(error(QString)), SIGNAL(error(QString)));
         success &= (bool)QObject::connect(d->interface, SIGNAL(statusChanged(int,QString)), SLOT(onStatusChanged(int,QString)));
@@ -105,10 +104,10 @@ void VoiceCallHandler::initialize(bool notifyError)
         success &= (bool)QObject::connect(d->interface, SIGNAL(childCallsChanged(QStringList)), SLOT(onChildCallsChanged(QStringList)));
     }
 
-    if(!(d->connected = success))
-    {
+    if (!(d->connected = success)) {
         QTimer::singleShot(2000, this, SLOT(initialize()));
-        if(notifyError) emit this->error("Failed to connect to VCM D-Bus service.");
+        if (notifyError)
+            emit this->error("Failed to connect to VCM D-Bus service.");
     } else {
         QDBusReply<QVariantMap> reply = d->interface->call("getProperties");
         if (reply.isValid()) {
@@ -146,7 +145,6 @@ void VoiceCallHandler::initialize(bool notifyError)
                 emit childCallsChanged();
             }
 
-            emit isReadyChanged();
         } else if (notifyError) {
             emit this->error("Failed to getProperties() from VCM D-Bus service.");
         }
@@ -232,6 +230,7 @@ void VoiceCallHandler::onMultipartyHandlerIdChanged(QString handlerId)
 
 void VoiceCallHandler::onChildCallsChanged(const QStringList &calls)
 {
+    Q_UNUSED(calls);
     TRACE
     emit childCallsListChanged();
 }
@@ -451,10 +450,4 @@ void VoiceCallHandler::onPendingCallFinished(QDBusPendingCallWatcher *watcher)
     } else {
         DEBUG_T("Received successful reply for member: %s", qPrintable(reply.reply().member()));
     }
-}
-
-bool VoiceCallHandler::isReady() const
-{
-    qWarning() << "TODO: missing implementation";
-    return false;
 }

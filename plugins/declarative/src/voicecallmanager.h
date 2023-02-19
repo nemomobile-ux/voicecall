@@ -32,7 +32,7 @@ class VoiceCallManager : public QObject
 
 public:
     explicit VoiceCallManager(QObject *parent = 0);
-            ~VoiceCallManager();
+    ~VoiceCallManager();
 
     QDBusInterface* interface() const;
 
@@ -76,6 +76,7 @@ public Q_SLOTS:
     void dial(const QString &msisdn);
     void dial(const QString &provider, const QString &msisdn);
 
+    void playRingtone(const QString &ringtonePath = QString());
     void silenceRingtone();
 
     bool setAudioMode(const QString &mode);
@@ -93,8 +94,8 @@ protected Q_SLOTS:
     void onVoiceCallsChanged();
     void onActiveVoiceCallChanged();
 
-    void onPendingCallFinished(QDBusPendingCallWatcher *watcher);
-    void onPendingSilenceFinished(QDBusPendingCallWatcher *watcher);
+    void onPendingBoolCallFinished(QDBusPendingCallWatcher *watcher);
+    void onPendingVoidCallFinished(QDBusPendingCallWatcher *watcher);
 
 private:
     class VoiceCallManagerPrivate *d_ptr;

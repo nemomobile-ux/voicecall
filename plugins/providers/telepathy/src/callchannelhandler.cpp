@@ -38,22 +38,22 @@
 static quint64 get_tick()
 {
 #if defined(CLOCK_BOOTTIME)
-   int id = CLOCK_BOOTTIME;
+    int id = CLOCK_BOOTTIME;
 #else
-   int id = CLOCK_MONOTONIC;
+    int id = CLOCK_MONOTONIC;
 #endif
 
-  quint64 res = 0;
+    quint64 res = 0;
 
-  struct timespec ts;
+    struct timespec ts;
 
-  if(clock_gettime(id, &ts) == 0) {
-    res = ts.tv_sec;
-    res *= 1000;
-    res += ts.tv_nsec / 1000000;
-  }
+    if (clock_gettime(id, &ts) == 0) {
+        res = ts.tv_sec;
+        res *= 1000;
+        res += ts.tv_nsec / 1000000;
+    }
 
-  return res;
+    return res;
 }
 
 class CallChannelHandlerPrivate
@@ -132,7 +132,8 @@ QString CallChannelHandler::lineId() const
 {
     TRACE
     Q_D(const CallChannelHandler);
-    if(!d->channel->isReady()) return QString();
+    if (!d->channel->isReady())
+        return QString();
     return d->channel->targetId();
 }
 
@@ -161,7 +162,8 @@ bool CallChannelHandler::isMultiparty() const
 {
     TRACE
     Q_D(const CallChannelHandler);
-    if(!d->channel->isReady()) return false;
+    if (!d->channel->isReady())
+        return false;
     return d->channel->isConference();
 }
 
@@ -169,7 +171,8 @@ bool CallChannelHandler::isEmergency() const
 {
     TRACE
     Q_D(const CallChannelHandler);
-    if(!d->channel->isReady()) return false;
+    if (!d->channel->isReady())
+        return false;
     return d->isEmergency;
 }
 
@@ -177,7 +180,8 @@ bool CallChannelHandler::isForwarded() const
 {
     TRACE
     Q_D(const CallChannelHandler);
-    if(!d->channel->isReady()) return false;
+    if (!d->channel->isReady())
+        return false;
     return d->isForwarded;
 }
 
@@ -185,7 +189,8 @@ bool CallChannelHandler::isRemoteHeld() const
 {
     TRACE
     Q_D(const CallChannelHandler);
-    if(!d->channel->isReady()) return false;
+    if (!d->channel->isReady())
+        return false;
     return d->isRemoteHeld;
 }
 
@@ -249,14 +254,13 @@ void CallChannelHandler::sendDtmf(const QString &tones)
     bool ok = true;
     unsigned int toneId = tones.toInt(&ok);
 
-    if(!ok)
-    {
+    if (!ok) {
         if (tones == "*") toneId = 10;
-        else if(tones == "#") toneId = 11;
-        else if(tones == "A") toneId = 12;
-        else if(tones == "B") toneId = 13;
-        else if(tones == "C") toneId = 14;
-        else if(tones == "D") toneId = 15;
+        else if (tones == "#") toneId = 11;
+        else if (tones == "A") toneId = 12;
+        else if (tones == "B") toneId = 13;
+        else if (tones == "C") toneId = 14;
+        else if (tones == "D") toneId = 15;
         else return;
     }
 
@@ -267,8 +271,7 @@ void CallChannelHandler::onCallChannelChannelReady(Tp::PendingOperation *op)
 {
     TRACE
     Q_D(CallChannelHandler);
-    if(op->isError())
-    {
+    if (op->isError()) {
         WARNING_T("Operation failed: %s: %s", qPrintable(op->errorName()), qPrintable(op->errorMessage()));
         emit this->error(QString("Telepathy Operation Failed: %1 - %2").arg(op->errorName(), op->errorMessage()));
         return;
@@ -293,22 +296,16 @@ void CallChannelHandler::onCallChannelChannelReady(Tp::PendingOperation *op)
     QObject::connect(d->channel.data(),
                      SIGNAL(callStateChanged(Tp::CallState)),
                      SLOT(onCallChannelCallStateChanged(Tp::CallState)));
-    QObject::connect(d->channel.data(),
-                     SIGNAL(localHoldStateChanged(Tp::LocalHoldState,Tp::LocalHoldStateReason)),
-                     SLOT(onCallChannelCallLocalHoldStateChanged(Tp::LocalHoldState,Tp::LocalHoldStateReason)));
 
-    if(d->channel->hasInitialAudio())
-    {
+    if (d->channel->hasInitialAudio()) {
         DEBUG_T("Processing channel initial content.");
         Tp::CallContentPtr audioContent = d->channel->contentByName(d->channel->initialAudioName());
-        if(!audioContent || audioContent.isNull())
-        {
+        if (!audioContent || audioContent.isNull()) {
             DEBUG_T("Audio content unavailable.");
         }
     }
 
-    if(d->channel->handlerStreamingRequired())
-    {
+    if (d->channel->handlerStreamingRequired()) {
         DEBUG_T("Handler streaming is required, setting up farstream channels.");
         QObject::connect(Tp::Farstream::createChannel(d->channel),
                          SIGNAL(finished(Tp::PendingOperation*)),
@@ -323,10 +320,10 @@ void CallChannelHandler::onCallChannelChannelReady(Tp::PendingOperation *op)
             DEBUG_T("Call Content");
             Tp::CallStreams streams = content->streams();
             foreach (const Tp::CallStreamPtr &stream, streams) {
-                DEBUG_T("  Call stream: localSendingState=%1", stream->localSendingState());
+                DEBUG_T("  Call stream: localSendingState=%i", stream->localSendingState());
                 DEBUG_T("      members: %u", stream.data()->remoteMembers().size());
-                foreach(const Tp::ContactPtr contact, stream.data()->remoteMembers()) {
-                    DEBUG_T("        member %s remoteSendingState=%s", qPrintable(contact->id()), stream->remoteSendingState(contact));
+                foreach (const Tp::ContactPtr contact, stream.data()->remoteMembers()) {
+                    DEBUG_T("        member %s remoteSendingState=%i", qPrintable(contact->id()), stream->remoteSendingState(contact));
                 }
                 //onStreamAdded(stream);
             }
@@ -340,12 +337,9 @@ void CallChannelHandler::onCallChannelChannelReady(Tp::PendingOperation *op)
     emit emergencyChanged(isEmergency());
     emit forwardedChanged(isForwarded());
 
-    if(d->channel->isRequested())
-    {
+    if (d->channel->isRequested()) {
         setStatus(STATUS_ALERTING);
-    }
-    else
-    {
+    } else {
         setStatus(STATUS_INCOMING);
     }
 
@@ -425,8 +419,7 @@ void CallChannelHandler::onCallChannelCallContentRemoved(Tp::CallContentPtr cont
 void CallChannelHandler::onCallChannelAcceptCallFinished(Tp::PendingOperation *op)
 {
     TRACE
-    if(op->isError())
-    {
+    if (op->isError()) {
         WARNING_T("Operation failed: %s: %s", qPrintable(op->errorName()), qPrintable(op->errorMessage()));
         emit this->error(QString("Telepathy Operation Failed: %1 - %2").arg(op->errorName(), op->errorMessage()));
         emit this->invalidated(op->errorName(), op->errorMessage());
@@ -439,8 +432,7 @@ void CallChannelHandler::onCallChannelAcceptCallFinished(Tp::PendingOperation *o
 void CallChannelHandler::onCallChannelHangupCallFinished(Tp::PendingOperation *op)
 {
     TRACE
-    if(op->isError())
-    {
+    if (op->isError()) {
         WARNING_T("Operation failed: %s: %s", qPrintable(op->errorName()), qPrintable(op->errorMessage()));
         emit this->error(QString("Telepathy Operation Failed: %1 - %2").arg(op->errorName(), op->errorMessage()));
         emit this->invalidated(op->errorName(), op->errorMessage());
@@ -455,8 +447,7 @@ void CallChannelHandler::onFarstreamCreateChannelFinished(Tp::PendingOperation *
     TRACE
     Q_D(CallChannelHandler);
 
-    if(op->isError())
-    {
+    if (op->isError()) {
         WARNING_T("Operation failed: %s: %s", qPrintable(op->errorName()), qPrintable(op->errorMessage()));
         emit this->error(QString("Telepathy Operation Failed: %1 - %2").arg(op->errorName(), op->errorMessage()));
         this->hangup();
@@ -464,8 +455,7 @@ void CallChannelHandler::onFarstreamCreateChannelFinished(Tp::PendingOperation *
     }
 
     Tp::Farstream::PendingChannel *pendingChannel = static_cast<Tp::Farstream::PendingChannel*>(op);
-    if(!pendingChannel)
-    {
+    if (!pendingChannel) {
         WARNING_T("Failed to cast pending channel.");
         this->hangup();
         return;
@@ -480,8 +470,7 @@ void CallChannelHandler::timerEvent(QTimerEvent *event)
     TRACE
     Q_D(CallChannelHandler);
 
-    if(isOngoing() && event->timerId() == d->durationTimerId)
-    {
+    if (isOngoing() && event->timerId() == d->durationTimerId) {
         d->duration = get_tick() - d->connectedAt;
         emit this->durationChanged(duration());
     }
@@ -492,16 +481,13 @@ void CallChannelHandler::onStatusChanged()
     TRACE
     Q_D(CallChannelHandler);
 
-    if(isOngoing())
-    {
+    if (isOngoing()) {
         if (d->durationTimerId == -1) {
             d->durationTimerId = this->startTimer(1000);
             d->elapsedTimer.start();
             d->connectedAt = get_tick();
         }
-    }
-    else if (d->durationTimerId != -1)
-    {
+    } else if (d->durationTimerId != -1) {
         this->killTimer(d->durationTimerId);
         d->durationTimerId = -1;
     }
@@ -516,9 +502,4 @@ void CallChannelHandler::setStatus(VoiceCallStatus newStatus)
 
     d->status = newStatus;
     emit statusChanged(d->status);
-}
-
-
-void CallChannelHandler::onCallChannelCallLocalHoldStateChanged(Tp::LocalHoldState state,Tp::LocalHoldStateReason reason) {
-    qWarning() << "TODO missing implementation";
 }

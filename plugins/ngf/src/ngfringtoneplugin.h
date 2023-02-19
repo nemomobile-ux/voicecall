@@ -33,7 +33,7 @@ class NgfRingtonePlugin : public AbstractVoiceCallManagerPlugin
 
 public:
     explicit NgfRingtonePlugin(QObject *parent = 0);
-            ~NgfRingtonePlugin();
+    ~NgfRingtonePlugin();
 
     QString pluginId() const;
 
@@ -49,6 +49,7 @@ protected Q_SLOTS:
     void onVoiceCallAdded(AbstractVoiceCallHandler *handler);
     void onVoiceCallStatusChanged(AbstractVoiceCallHandler *handler = 0);
     void onVoiceCallDestroyed();
+    void onPlayRingtoneRequested(const QString &ringtonePath);
     void onSilenceRingtoneRequested();
 
 protected Q_SLOTS:

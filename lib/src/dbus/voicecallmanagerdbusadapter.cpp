@@ -85,8 +85,7 @@ QStringList VoiceCallManagerDBusAdapter::providers() const
     Q_D(const VoiceCallManagerDBusAdapter);
     QStringList results;
 
-    foreach(AbstractVoiceCallProvider *provider, d->manager->providers())
-    {
+    foreach (AbstractVoiceCallProvider *provider, d->manager->providers()) {
         results.append(provider->providerId() + ":" + provider->providerType());
     }
 
@@ -102,8 +101,7 @@ QStringList VoiceCallManagerDBusAdapter::voiceCalls() const
     Q_D(const VoiceCallManagerDBusAdapter);
     QStringList results;
 
-    foreach(AbstractVoiceCallHandler *handler, d->manager->voiceCalls())
-    {
+    foreach (AbstractVoiceCallHandler *handler, d->manager->voiceCalls()) {
         results.append(handler->handlerId());
     }
 
@@ -117,8 +115,7 @@ QString VoiceCallManagerDBusAdapter::activeVoiceCall() const
 {
     TRACE
     Q_D(const VoiceCallManagerDBusAdapter);
-    if(d->manager->activeVoiceCall())
-    {
+    if (d->manager->activeVoiceCall()) {
         return d->manager->activeVoiceCall()->handlerId();
     }
     return QString();
@@ -194,7 +191,7 @@ int VoiceCallManagerDBusAdapter::totalIncomingCallDuration() const
 
     \sa totalOutgoingCallDuration(), totalIncomingCallDuration()
 */
-Q_INVOKABLE void VoiceCallManagerDBusAdapter::resetCallDurationCounters()
+void VoiceCallManagerDBusAdapter::resetCallDurationCounters()
 {
     TRACE
     Q_D(VoiceCallManagerDBusAdapter);
@@ -253,13 +250,22 @@ bool VoiceCallManagerDBusAdapter::dial(const QString &provider, const QString &m
 {
     TRACE
     Q_D(VoiceCallManagerDBusAdapter);
-    if(!d->manager->dial(provider, msisdn))
-    {
+    if (!d->manager->dial(provider, msisdn)) {
         emit this->error(d->manager->errorString());
         return false;
     }
 
     return true;
+}
+
+/*!
+  Starts playing the ringtone for an incoming call.
+ */
+void VoiceCallManagerDBusAdapter::playRingtone(const QString &ringtonePath)
+{
+    TRACE
+    Q_D(VoiceCallManagerDBusAdapter);
+    d->manager->playRingtone(ringtonePath);
 }
 
 /*!

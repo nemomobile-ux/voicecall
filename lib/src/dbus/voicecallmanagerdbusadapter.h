@@ -48,7 +48,7 @@ class VoiceCallManagerDBusAdapter : public QDBusAbstractAdaptor
 
 public:
     explicit VoiceCallManagerDBusAdapter(QObject *parent = 0);
-            ~VoiceCallManagerDBusAdapter();
+    ~VoiceCallManagerDBusAdapter();
 
     void configure(VoiceCallManagerInterface *manager);
 
@@ -83,6 +83,7 @@ Q_SIGNALS:
 public Q_SLOTS:
     bool dial(const QString &provider, const QString &msisdn);
 
+    void playRingtone(const QString &ringtonePath);
     void silenceRingtone();
 
     bool setAudioMode(const QString &mode);

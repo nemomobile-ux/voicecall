@@ -86,8 +86,7 @@ void VoiceCallManager::initialize(bool notifyError)
     d->ngf->connect();
 #endif
 
-    if(d->interface->isValid())
-    {
+    if (d->interface->isValid()) {
         success = true;
         success &= (bool)QObject::connect(d->interface, SIGNAL(error(QString)), SIGNAL(error(QString)));
         success &= (bool)QObject::connect(d->interface, SIGNAL(voiceCallsChanged()), SLOT(onVoiceCallsChanged()));
@@ -102,10 +101,10 @@ void VoiceCallManager::initialize(bool notifyError)
         onVoiceCallsChanged();
     }
 
-    if(!(d->connected = success))
-    {
+    if (!(d->connected = success)) {
         QTimer::singleShot(2000, this, SLOT(initialize()));
-        if(notifyError) emit this->error("Failed to connect to VCM D-Bus service.");
+        if (notifyError)
+            emit this->error("Failed to connect to VCM D-Bus service.");
     }
 }
 
@@ -131,7 +130,7 @@ QString VoiceCallManager::defaultProviderId() const
 {
     TRACE
     Q_D(const VoiceCallManager);
-    if(d->providers->count() == 0) {
+    if (d->providers->count() == 0) {
         qWarning() << Q_FUNC_INFO << "No provider added";
         return QString();
     }
@@ -223,7 +222,16 @@ void VoiceCallManager::dial(const QString &provider, const QString &msisdn)
     QDBusPendingCall call = d->interface->asyncCall("dial", provider, msisdn);
 
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-    QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(onPendingCallFinished(QDBusPendingCallWatcher*)));
+    QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(onPendingBoolCallFinished(QDBusPendingCallWatcher*)));
+}
+
+void VoiceCallManager::playRingtone(const QString &ringtonePath)
+{
+    TRACE
+    Q_D(const VoiceCallManager);
+    QDBusPendingCall call = d->interface->asyncCall("playRingtone", ringtonePath);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
+    QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(onPendingVoidCallFinished(QDBusPendingCallWatcher*)));
 }
 
 void VoiceCallManager::silenceRingtone()
@@ -232,7 +240,7 @@ void VoiceCallManager::silenceRingtone()
     Q_D(const VoiceCallManager);
     QDBusPendingCall call = d->interface->asyncCall("silenceRingtone");
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
-    QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(onPendingSilenceFinished(QDBusPendingCallWatcher*)));
+    QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(onPendingVoidCallFinished(QDBusPendingCallWatcher*)));
 }
 
 /*
@@ -278,19 +286,17 @@ bool VoiceCallManager::startDtmfTone(const QString &tone)
     bool ok = true;
     unsigned int toneId = tone.toInt(&ok);
 
-    if(!ok)
-    {
+    if (!ok) {
         if (tone == "*") toneId = 10;
-        else if(tone == "#") toneId = 11;
-        else if(tone == "A") toneId = 12;
-        else if(tone == "B") toneId = 13;
-        else if(tone == "C") toneId = 14;
-        else if(tone == "D") toneId = 15;
+        else if (tone == "#") toneId = 11;
+        else if (tone == "A") toneId = 12;
+        else if (tone == "B") toneId = 13;
+        else if (tone == "C") toneId = 14;
+        else if (tone == "D") toneId = 15;
         else return false;
     }
 
-    if(d->activeVoiceCall)
-    {
+    if (d->activeVoiceCall) {
         d->activeVoiceCall->sendDtmf(tone);
     }
 
@@ -298,8 +304,7 @@ bool VoiceCallManager::startDtmfTone(const QString &tone)
     properties.insert("tonegen.value", toneId);
 
 #ifdef WITH_NGF
-    if (d->eventId > 0)
-    {
+    if (d->eventId > 0) {
         d->ngf->stop(d->eventId);
     }
     d->eventId = d->ngf->play("dtmf", properties);
@@ -313,8 +318,7 @@ bool VoiceCallManager::stopDtmfTone()
     TRACE
     Q_D(VoiceCallManager);
 
-    if (d->eventId > 0)
-    {
+    if (d->eventId > 0) {
 #ifdef WITH_NGF
         d->ngf->stop(d->eventId);
 #endif
@@ -342,19 +346,16 @@ void VoiceCallManager::onActiveVoiceCallChanged()
     Q_D(VoiceCallManager);
     QString voiceCallId = d->interface->property("activeVoiceCall").toString();
 
-    if(d->voicecalls->rowCount(QModelIndex()) == 0 || voiceCallId.isNull() || voiceCallId.isEmpty())
-    {
+    if (d->voicecalls->rowCount(QModelIndex()) == 0 || voiceCallId.isEmpty()) {
         d->activeVoiceCall = NULL;
-    }
-    else
-    {
+    } else {
         d->activeVoiceCall = d->voicecalls->instance(voiceCallId);
     }
 
     emit this->activeVoiceCallChanged();
 }
 
-void VoiceCallManager::onPendingCallFinished(QDBusPendingCallWatcher *watcher)
+void VoiceCallManager::onPendingBoolCallFinished(QDBusPendingCallWatcher *watcher)
 {
     TRACE
     QDBusPendingReply<bool> reply = *watcher;
@@ -368,7 +369,7 @@ void VoiceCallManager::onPendingCallFinished(QDBusPendingCallWatcher *watcher)
     watcher->deleteLater();
 }
 
-void VoiceCallManager::onPendingSilenceFinished(QDBusPendingCallWatcher *watcher)
+void VoiceCallManager::onPendingVoidCallFinished(QDBusPendingCallWatcher *watcher)
 {
     TRACE
     QDBusPendingReply<> reply = *watcher;

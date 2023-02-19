@@ -117,7 +117,8 @@ QVariant VoiceCallProviderModel::data(const QModelIndex &index, int role) const
     TRACE
     Q_D(const VoiceCallProviderModel);
 
-    if(!index.isValid() || index.row() >= d->providers.count()) return QVariant();
+    if (!index.isValid() || index.row() >= d->providers.count())
+        return QVariant();
 
     QStringList keys = d->providers.keys();
     std::sort(keys.begin(), keys.end());
@@ -147,8 +148,7 @@ void VoiceCallProviderModel::onProvidersChanged()
     this->beginResetModel();
 
     d->providers.clear();
-    foreach(QString provider, d->manager->interface()->property("providers").toStringList())
-    {
+    foreach (QString provider, d->manager->interface()->property("providers").toStringList()) {
         QStringList parts = provider.split(':');
         d->providers.insert(parts.first(), VoiceCallProviderData(parts.first(),
                                                                  parts.last(),
@@ -163,7 +163,8 @@ QString VoiceCallProviderModel::id(int index) const
 {
     TRACE
     Q_D(const VoiceCallProviderModel);
-    if(index > d->providers.count()) return QString();
+    if (index > d->providers.count())
+        return QString();
 
     QStringList keys = d->providers.keys();
     std::sort(keys.begin(), keys.end());
@@ -176,7 +177,8 @@ QString VoiceCallProviderModel::type(int index) const
 {
     TRACE
     Q_D(const VoiceCallProviderModel);
-    if(index > d->providers.count()) return QString();
+    if (index > d->providers.count())
+        return QString();
     QStringList keys = d->providers.keys();
     std::sort(keys.begin(), keys.end());
 
@@ -188,7 +190,8 @@ QString VoiceCallProviderModel::label(int index) const
 {
     TRACE
     Q_D(const VoiceCallProviderModel);
-    if(index > d->providers.count()) return QString();
+    if (index > d->providers.count())
+        return QString();
     QStringList keys = d->providers.keys();
     std::sort(keys.begin(), keys.end());
 

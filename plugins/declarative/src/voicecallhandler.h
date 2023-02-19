@@ -26,7 +26,6 @@ class VoiceCallHandler : public QObject
     Q_PROPERTY(bool isEmergency READ isEmergency NOTIFY emergencyChanged)
     Q_PROPERTY(bool isMultiparty READ isMultiparty NOTIFY multipartyChanged)
     Q_PROPERTY(bool isForwarded READ isForwarded NOTIFY forwardedChanged)
-    Q_PROPERTY(bool isReady READ isReady NOTIFY isReadyChanged)
     Q_PROPERTY(bool isRemoteHeld READ isRemoteHeld NOTIFY remoteHeldChanged)
     Q_PROPERTY(VoiceCallModel* childCalls READ childCalls NOTIFY childCallsChanged)
     Q_PROPERTY(VoiceCallHandler* parentCall READ parentCall NOTIFY parentCallChanged)
@@ -44,7 +43,7 @@ public:
     };
 
     explicit VoiceCallHandler(const QString &handlerId, QObject *parent = 0);
-            ~VoiceCallHandler();
+    ~VoiceCallHandler();
 
     QDBusInterface* interface() const;
 
@@ -59,7 +58,6 @@ public:
     bool isMultiparty() const;
     bool isEmergency() const;
     bool isForwarded() const;
-    bool isReady() const;
     bool isRemoteHeld() const;
     VoiceCallModel* childCalls() const;
     VoiceCallHandler* parentCall() const;
@@ -73,7 +71,6 @@ Q_SIGNALS:
     void emergencyChanged();
     void multipartyChanged();
     void forwardedChanged();
-    void isReadyChanged();
     void remoteHeldChanged();
     void childCallsChanged();
     void childCallsListChanged();

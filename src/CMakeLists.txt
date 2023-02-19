@@ -10,7 +10,6 @@ add_executable(voicecall-manager
     main.cpp
     audiocallpolicyproxy.cpp
     basicvoicecallconfigurator.cpp
-    basicringtonenotificationprovider.cpp
     voicecallmanager.cpp
     dbus/voicecallmanagerdbusservice.cpp
 )
