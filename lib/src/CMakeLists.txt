@@ -13,7 +13,6 @@ set(VOICECALL_LIB_SOURCES
 set(VOICECALL_LIB_HEADERS
     common.h
     voicecallmanagerinterface.h
-    abstractnotificationprovider.h
     abstractvoicecallhandler.h
     abstractvoicecallprovider.h
     abstractvoicecallmanagerplugin.h
